@@ -1,19 +1,23 @@
 import 'package:flutter/material.dart';
 
-void main() {
-  runApp(YRCAttendanceApp());
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  final sheetsService = GoogleSheetsService();
+  await sheetsService.init();
+  runApp(YRCAttendanceApp(sheetsService: sheetsService));
 }
 
 class YRCAttendanceApp extends StatelessWidget {
+  final GoogleSheetsService sheetsService;
+
+  YRCAttendanceApp({@required this.sheetsService});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'YRC Attendance',
-      theme: ThemeData(
-        primarySwatch: Colors.red,
-        visualDensity: VisualDensity.adaptivePlatformDensity,
-      ),
-      home: LoginScreen(),
+      theme: ThemeData(primarySwatch: Colors.red),
+      home: LoginScreen(sheetsService: sheetsService),
     );
   }
 }
